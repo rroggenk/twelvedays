@@ -1,5 +1,6 @@
 ---
 title: "Lab: The 12 Days of Christmas"
+author: "Zuhayr Baqar, Dan Ngyuyen, Rachel Roggenkemper, Annie Zell (Group 5)"
 output:
   prettydoc::html_pretty:
     theme: tactile
@@ -101,22 +102,7 @@ purrr::map_chr(xmas$Gift.Item, pluralize_gift)
 ## Step Two: Creating sentences
 
 Write a function called `make_phrase` that takes as input the necessary information, 
-and returns a phrase.  For example, 
-
-```{r}
-make_phrase(num = 10, 
-            num_word = "ten", 
-            item = "lords", 
-            verb = "a-leaping", 
-            adjective = "", 
-            location = "")
-```
-
-should return
-
-```
-"ten lords a-leaping"
-```
+and returns a phrase.  
 
 ```{r}
 make_phrase <- function(num, num_word, item, verb, adjective, location) {
@@ -155,6 +141,24 @@ make_phrase <- function(num, num_word, item, verb, adjective, location) {
   
 }
 ```
+
+For example, 
+
+```{r}
+make_phrase(num = 10, 
+            num_word = "ten", 
+            item = "lord", 
+            verb = "a-leaping", 
+            adjective = "", 
+            location = "")
+```
+
+should return
+
+```
+"ten lords a-leaping"
+```
+
 
 
 # Test Your Function
@@ -214,9 +218,25 @@ sing_line <- function(dataset, line, phrase_col){
     phrases <- dataset %>% 
       pull({{phrase_col}})
     
-  return(glue::glue("{intro[line]} \n{phrases[line]} and \n{phrases[line-1]}.") )
+    until_two <- paste0(glue::glue("{phrases[line:2]}"), collapse = "\n")
+    
+    last <- glue::glue("and {phrases[1]}")
+    
+    one <- glue::glue("{phrases[1]}")
+    
+    full_phrase <- glue::glue("{intro[line]} \n{until_two} \n{last}.")
+      
+  if(line == 1){
+    return(glue::glue("{intro[line]} \n{one}."))
+    
+  } else{
+  return(full_phrase)    
+  }
 }
 ```
+
+Citation: 
+paste0 - citing my older brother: Ryan
 
 For example,
 
@@ -262,7 +282,6 @@ xmas2 <- xmas %>%
 map_chr(1:12, ~sing_line(xmas2, .x, Full.Phrase)) %>%
   str_c(collapse = "\n") %>%
   cat()
-
 ```
 
 
