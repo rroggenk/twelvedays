@@ -8,7 +8,7 @@ output:
     css: styles.css
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include = FALSE, message = FALSE, warning = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
 # Packages for Functions
@@ -26,7 +26,7 @@ Run the code below to load up a dataset called `xmas` that contains the crucial
 information about the gifts in the song. We will use this dataset to test out
 our functions as we work on them.
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 xmas <- read.csv("https://www.dropbox.com/s/e584pryn8evm1gz/xmas.csv?dl=1")
 ```
 
@@ -41,7 +41,7 @@ on day 5 simply says "ring".
 Using the skeleton of the `pluralize_gift()` function, complete the code so that 
 the function takes a gift and returns the appropriate plural. 
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 # Function that takes a noun and makes it plural
 # Arguments -- gift -- A string or vector of strings
 # Return -- A string or vector of strings with the pluralized words
@@ -66,7 +66,7 @@ these types.
 
 *Hint 2:*  The following small example may be useful to you:
 
-```{r, eval = TRUE}
+```{r, message = FALSE, warning = FALSE}
 my_names <- c("Kimberly", "Trini", "Jason", "Billy", "Zach", "Tommy")
 
 my_names %>% 
@@ -87,7 +87,7 @@ Try your function out on the gifts in the dataset.
 (Consider: is your function *vectorized*?  It does not have to be, but it may
 make things simpler!)
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 
 pluralize_gift(xmas$Gift.Item)
 
@@ -104,7 +104,7 @@ purrr::map_chr(xmas$Gift.Item, pluralize_gift)
 Write a function called `make_phrase` that takes as input the necessary information, 
 and returns a phrase.  
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 make_phrase <- function(num, num_word, item, verb, adjective, location) {
   
   ## Step 1: Replace NAs with blank strings
@@ -144,7 +144,7 @@ make_phrase <- function(num, num_word, item, verb, adjective, location) {
 
 For example, 
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 make_phrase(num = 10, 
             num_word = "ten", 
             item = "lord", 
@@ -170,7 +170,7 @@ the daily phrases.
 to say `"twelve"` **not** `"twelfth"`. I suggest using the **english** package
 to create numbered days and then use those in your `pmap_chr()`!
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 xmas <- xmas %>%
   mutate(day.num = as.english(Day),
     Full.Phrase = pmap_chr(list(num = Day, 
@@ -198,7 +198,7 @@ Write a function called `sing_line` that takes as input:
 
 * The name of a column in the dataset that contains the phrases for each day.
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 # Produces the string for one day of the song.
 # Arguments -- dataset -- A data frame containing information about gifts
 # Arguments -- line -- The number of the line for the day you want to sing about
@@ -240,8 +240,7 @@ paste0 - citing my older brother: Ryan
 
 For example,
 
-
-```{r}
+```{r, message = FALSE, warning = FALSE}
 sing_line(xmas, 
           line = 2, 
           phrase_col = Full.Phrase)
@@ -266,7 +265,7 @@ column names as arguments to a function.  Don't delete that line of code!
 Run the following code to test out your functions! The ouput should be the 
 lyrics for the entire 12 Days of Christmas song. 
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 xmas2 <- xmas %>%
   mutate(
     day.num = as.character(english::english(Day)), 
